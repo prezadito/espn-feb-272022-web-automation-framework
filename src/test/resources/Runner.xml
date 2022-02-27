@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Amazon Search" parallel="false">
+    <parameter name="os" value="windows"></parameter>
+    <parameter name="browserName" value="chrome"></parameter>
+    <parameter name="url" value="https://espn.com/"></parameter>
+
+    <test name="ESPN-Home Test">
+        <classes>
+            <class name="test.Test"></class>
+        </classes>
+    </test>
+</suite>
