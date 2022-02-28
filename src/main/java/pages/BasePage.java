@@ -13,16 +13,16 @@ public class BasePage extends Setup {
     }
 
     @FindBy(css = "div.scores-next.controls")
-    WebElement nextScore;
+    public WebElement nextScore;
 
     @FindBy(css = "div.scores-prev.controls")
-    WebElement prevScore;
+    public WebElement prevScore;
 
     @FindBy(css = "button.button.button-filter.sm.dropdown-toggle.current-league-name")
-    WebElement topEventsBtn;
+    public WebElement topEventsBtn;
 
     @FindBy(css = "a[data-league='nba']")
-    WebElement dropdownNBA;
+    public WebElement dropdownNBA;
 
     @FindBy(css = "a[href='/']")
     WebElement mainLogo;
@@ -69,8 +69,9 @@ public class BasePage extends Setup {
     @FindBy(css = "a#global-user-trigger")
     WebElement navProfile;
 
-    public void dropdownNBA() {
-        hoverAndClick(topEventsBtn, dropdownNBA);
+    public void dropdown(WebElement ele, WebElement ele2) {
+        click(ele);
+        click(ele2);
     }
 
 

@@ -8,7 +8,7 @@
 
     <test name="ESPN Header Test">
         <classes>
-            <class name="test.CheckScoreboard"></class>
+            <class name="test.CheckScoreboardTest"></class>
         </classes>
     </test>
 </suite>
