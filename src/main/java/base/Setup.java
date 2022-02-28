@@ -17,7 +17,6 @@ public class Setup {
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "C:/Users/qwasd/IdeaProjects/espn-feb-272022-web-automation-framework/drivers/chromedriver.exe");
         driver = new ChromeDriver();
-        Actions action = new Actions(driver);
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         driver.navigate().to("https://www.espn.com/");
@@ -34,7 +33,8 @@ public class Setup {
     }
 
     public void hoverAndClick(WebElement element, WebElement element2) {
-        click(element);
+        Actions action = new Actions(driver);
+        action.moveToElement(element);
         click(element2);
     }
 
