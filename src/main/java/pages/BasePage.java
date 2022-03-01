@@ -6,75 +6,51 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+
 public class BasePage extends Setup {
 
     public BasePage (WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(css = "div.scores-next.controls")
-    public WebElement nextScore;
-
-    @FindBy(css = "div.scores-prev.controls")
-    public WebElement prevScore;
-
     @FindBy(css = "button.button.button-filter.sm.dropdown-toggle.current-league-name")
     public WebElement topEventsBtn;
 
     @FindBy(css = "a[data-league='nba']")
-    public WebElement dropdownNBA;
+    WebElement NBATopEventsOption;
 
-    @FindBy(css = "a[href='/']")
-    WebElement mainLogo;
+    @FindBy(css = "button.current-league-name")
+    WebElement selectedTopEvent;
 
-    @FindBy(css = "a[href='/nfl/'")
-    WebElement navNFLBtn;
+    @FindBy(xpath = "//header/nav[@id='global-nav']/ul[1]/li[1]/a[1]/span[1]/span[1]")
+    WebElement nflLink;
 
-    @FindBy(css = "a[href='/nba/'")
-    WebElement navNBABtn;
+    @FindBy(xpath = "//header/nav[@id='global-nav']/ul[1]/li[1]/div[1]/ul[1]/li[7]/a[1]/span[1]/span[1]")
+    WebElement teamsLink;
 
-    @FindBy(css = "a[href='/nhl/'")
-    WebElement navNHLBtn;
+    @FindBy(xpath = "//li[@class='league']")
+    List<WebElement> topEventsOptions;
 
-    @FindBy(css = "a[href='/mens-college-basketball/'")
-    WebElement navNCAAMBtn;
-
-    @FindBy(css = "a[href='/womens-college-basketball/'")
-    WebElement navNCAAWBtn;
-
-    @FindBy(css = "a[href='/soccer/'")
-    WebElement navSoccerBtn;
-
-    @FindBy()
-    WebElement navItemDrop;
-
-    @FindBy(css = "li.pillar.logo.espnplus")
-    WebElement navESPNPlus;
-
-    @FindBy(css = "a[href='http://www.espn.com/watch/']")
-    WebElement navWatch;
-
-    @FindBy(css = "a[href='http://www.espn.com/espnradio/index']")
-    WebElement navListen;
-
-    @FindBy(css = "a[href='/fantasy/'")
-    WebElement navFantasy;
-
-    @FindBy()
-    WebElement navMore;
-
-    @FindBy(css = "a#globalsearchtrigger")
-    WebElement navSearch;
-
-    @FindBy(css = "a#global-user-trigger")
-    WebElement navProfile;
-
-    public void dropdown(WebElement ele, WebElement ele2) {
-        click(ele);
-        click(ele2);
+    public void hoverOverTopEvents(WebDriver driver) {
+        hoverOver(driver, topEventsBtn);
     }
 
+    public void clickOnTopEventOption(String option) {
+        clickOnElementInListWithGivenText(topEventsOptions, option);
+    }
 
+    public String getTopEventsText() {
+        return getText(selectedTopEvent);
+    }
+
+    public void hoverOverNfl(WebDriver driver) {
+        hoverOver(driver, nflLink);
+    }
+
+    public void clickOnTeams(WebDriver driver) {
+        hoverAndClick(driver, teamsLink);
+    }
 
 
 }

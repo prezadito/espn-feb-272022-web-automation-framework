@@ -1,4 +1,4 @@
-package consts;
+package constants;
 
 public enum HeaderMenuOptions {
     TOP_EVENTS,
