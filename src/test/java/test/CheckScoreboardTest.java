@@ -1,7 +1,6 @@
 package test;
 
 import base.Setup;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.BasePage;
