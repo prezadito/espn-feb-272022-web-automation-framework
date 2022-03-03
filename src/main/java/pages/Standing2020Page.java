@@ -15,8 +15,8 @@ public class Standing2020Page extends Setup {
     @FindBy(xpath = "//h1[contains(text(),'NFL Standings 2020')]")
     WebElement standings2020Header;
 
-    public String getStandings2020HeaderText(WebElement element){
-        return getText(element);
+    public String getStandings2020HeaderText(){
+        return getText(standings2020Header);
     }
 
 }
