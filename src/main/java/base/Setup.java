@@ -1,9 +1,9 @@
 package base;
 
 import com.relevantcodes.extentreports.LogStatus;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -15,15 +15,20 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 import reporting.ExtentManager;
 import reporting.ExtentTestManager;
+import utility.Utilities;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class Setup {
@@ -32,12 +37,12 @@ public class Setup {
 
     String userDir = System.getProperty("user.dir");
 
-//    public Properties prop = Utilities.loadProperties(Utilities.projectPath()+"/config.properties");
-//    String browserStackUsername = prop.getProperty("browserstack.username");
-//    String browserStackPassword = prop.getProperty("browserstack.password");
-//    String takeScreenshot = prop.getProperty("take.screenshot", "false");
-//    String waitTime = prop.getProperty("wait.time", "10");
-//    String windowMaximize = prop.getProperty("window.maximize", "false");
+    public Properties prop = Utilities.loadProperties(userDir + "\\config.properties");
+    String browserStackUsername = prop.getProperty("browserstack.username");
+    String browserStackPassword = prop.getProperty("browserstack.password");
+    String takeScreenshot = prop.getProperty("take.screenshot", "false");
+    String waitTime = prop.getProperty("wait.time", "10");
+    String windowMaximize = prop.getProperty("window.maximize", "false");
 
     public static com.relevantcodes.extentreports.ExtentReports extent;
 
@@ -79,11 +84,11 @@ public class Setup {
         }
         ExtentTestManager.endTest();
         extent.flush();
-//        if (takeScreenshot.equalsIgnoreCase("true")){
-//            if (result.getStatus() == ITestResult.FAILURE) {
-//                //takeScreenshot(result.getName());
-//            }
-//        }
+        if (takeScreenshot.equalsIgnoreCase("true")){
+            if (result.getStatus() == ITestResult.FAILURE) {
+                takeScreenshot(result.getName());
+            }
+        }
         driver.quit();
     }
 
@@ -98,24 +103,27 @@ public class Setup {
         return calendar.getTime();
     }
 
-    @Parameters({"useCloudEnv", "envName", "envUsername", "envAccessKey", "os", "os_version", "browserName", "browserVersion", "url"})
+    @Parameters({"useCloudEnv", "envName", "os", "os_version", "browserName", "browserVersion", "url"})
     @BeforeMethod
     public void setup(@Optional("false") Boolean useCloudEnv, @Optional("Browserstack") String envName,
-                      @Optional String envUsername, @Optional String envAccessKey, @Optional("Windows") String os,
+                      @Optional("Windows") String os,
                       @Optional("11") String os_version, @Optional("Chrome") String browserName,
                       @Optional("99") String browserVersion, @Optional("https://www.espn.com/") String url) throws MalformedURLException {
         if(useCloudEnv) {
             if(envName.equalsIgnoreCase("Browserstack")) {
-                getCloudDriver(envName, envUsername, envAccessKey, os, os_version, browserName, browserVersion);
+                getCloudDriver(envName, browserStackUsername, browserStackPassword, os, os_version, browserName, browserVersion);
             } else if(envName.equalsIgnoreCase("Saucelabs")) {
-                getCloudDriver(envName, envUsername, envAccessKey, os, os_version, browserName, browserVersion);
+                getCloudDriver(envName, browserStackUsername, browserStackPassword, os, os_version, browserName, browserVersion);
             }
         } else {
             getDriver(os, browserName);
         }
 
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Long.parseLong(waitTime), TimeUnit.SECONDS);
+        if(windowMaximize.equalsIgnoreCase("true")) {
+            driver.manage().window().maximize();
+        }
+
         driver.navigate().to(url);
     }
 
@@ -123,14 +131,14 @@ public class Setup {
         if(browserName.equalsIgnoreCase("Chrome")) {
             if(os.equalsIgnoreCase("Windows")) {
                 System.setProperty("webdriver.chrome.driver", userDir + "\\drivers\\chromedriver.exe");
-            } else if(browserName.equalsIgnoreCase("OS X")) {
+            } else if(os.equalsIgnoreCase("OS X")) {
                 System.setProperty("webdriver.chrome.driver", userDir + "\\drivers\\chromedriver");
             }
             driver = new ChromeDriver();
         } else if(browserName.equalsIgnoreCase("Firefox")) {
             if(os.equalsIgnoreCase("Windows")) {
                 System.setProperty("webdriver.gecko.driver", userDir + "\\drivers\\geckodriver.exe");
-            } else if(browserName.equalsIgnoreCase("OS X")) {
+            } else if(os.equalsIgnoreCase("OS X")) {
                 System.setProperty("webdriver.gecko.driver", userDir + "\\drivers\\geckodriver");
             }
             driver = new FirefoxDriver();
@@ -219,5 +227,27 @@ public class Setup {
             select.selectByValue(option);
         }
     }
+
+    public void takeScreenshot(String screenshotName) {
+        DateFormat df = new SimpleDateFormat("(MM.dd.yyyy-HH:mma)");
+        Date date = new Date();
+        df.format(date);
+        File file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(file, new File(System.getProperty("user.dir")+File.pathSeparator+ "screenshots" +File.pathSeparator+screenshotName+ " " +df.format(date)+".png"));
+            System.out.println("Screenshot captured");
+        } catch (Exception e) {
+            String path = System.getProperty("user.dir")+ "/screenshots/"+screenshotName+" "+df.format(date)+".png";
+            System.out.println(path);
+            System.out.println("Exception while taking screenshot " +e.getMessage());;
+        }
+    }
+
+    public static String convertToString(String str){
+        String splitString;
+        splitString = StringUtils.join(StringUtils.splitByCharacterTypeCamelCase(str), ' ');
+        return splitString;
+    }
+
 
 }

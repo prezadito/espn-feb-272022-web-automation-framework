@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
 <suite name="ESPN Scoreboard Tracker" parallel="false">
-    <parameter name="useCloudEnv" value="false"></parameter>
+    <parameter name="useCloudEnv" value="true"></parameter>
     <parameter name="cloudEnvName" value="Browserstack"></parameter>
     <parameter name="os" value="Windows"></parameter>
     <parameter name="os_version" value="11"></parameter>

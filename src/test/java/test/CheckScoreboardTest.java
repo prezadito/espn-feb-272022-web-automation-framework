@@ -8,7 +8,7 @@ import pages.BasePage;
 public class CheckScoreboardTest extends Setup {
 
     @Test
-    public void checkNBAScores() {
+    public void checkNFLScores() {
         BasePage basePage = new BasePage(driver);
         basePage.hoverOverTopEvents(driver);
         basePage.clickOnTopEventOption("NFL");
