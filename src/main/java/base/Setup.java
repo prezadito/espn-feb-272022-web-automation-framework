@@ -249,5 +249,13 @@ public class Setup {
         return splitString;
     }
 
+    public Boolean checkPageForElement(WebDriver driver, String string) {
+        if (driver.getPageSource().contains(string)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
 
 }
