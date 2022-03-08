@@ -2,19 +2,19 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
 <suite name="ESPN Scoreboard Tracker" parallel="false">
-    <parameter name="useCloudEnv" value="false"></parameter>
-    <parameter name="cloudEnvName" value="Browserstack"></parameter>
-    <parameter name="os" value="Windows"></parameter>
-    <parameter name="os_version" value="11"></parameter>
-    <parameter name="browserName" value="Chrome"></parameter>
-    <parameter name="browserVersion" value="98"></parameter>
-    <parameter name="url" value="https://espn.com/"></parameter>
+    <parameter name="useCloudEnv" value="false"/>
+    <parameter name="cloudEnvName" value="Browserstack"/>
+    <parameter name="os" value="Windows"/>
+    <parameter name="os_version" value="11"/>
+    <parameter name="browserName" value="Chrome"/>
+    <parameter name="browserVersion" value="98"/>
+    <parameter name="url" value="https://espn.com/"/>
 
     <test name="ESPN Header Test">
         <classes>
-            <class name="test.CheckScoreboardTest"></class>
-            <class name="test.CheckTeamsPreviousYearStandingTest"></class>
-            <class name="test.PlayHomePageVideoTest"></class>
+            <class name="test.CheckScoreboardTest"/>
+            <class name="test.CheckTeamsPreviousYearStandingTest"/>
+            <class name="test.PlayVideoTest"/>
         </classes>
     </test>
 </suite>

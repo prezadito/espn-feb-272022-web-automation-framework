@@ -9,7 +9,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
@@ -176,6 +178,12 @@ public class Setup {
         element.click();
     }
 
+    public void waitUntilElementIsClickableThenClickIt(WebDriver driver, WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+        click(element);
+    }
+
     public void hoverOver(WebDriver driver, WebElement element) {
         Actions action = new Actions(driver);
         action.moveToElement(element).build().perform();
@@ -249,13 +257,24 @@ public class Setup {
         return splitString;
     }
 
-    public Boolean checkPageForElement(WebDriver driver, String string) {
-        if (driver.getPageSource().contains(string)) {
+    public Boolean checkIfElementIsDisplayed(WebElement element) {
+        if (element.isDisplayed()) {
             return Boolean.TRUE;
         } else {
             return Boolean.FALSE;
         }
     }
+
+    public void waitUntilFrameIsAvailableAndSwitchToIt(WebDriver driver, WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(element));
+    }
+
+    public void switchToIFrame(WebDriver driver, int frameIndex) {
+        driver.switchTo().frame(frameIndex);
+    }
+
+
 
 
 }

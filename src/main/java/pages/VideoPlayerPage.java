@@ -26,8 +26,8 @@ public class VideoPlayerPage extends Setup {
         click(cableProviderCloseButton);
     }
 
-    public Boolean isChooseProviderPopUpVisible(WebDriver driver) {
-        return checkPageForElement(driver, "Choose Provider");
+    public Boolean isChooseProviderPopUpVisible() {
+        return checkIfElementIsDisplayed(cableProviderCloseButton);
     }
 
 }

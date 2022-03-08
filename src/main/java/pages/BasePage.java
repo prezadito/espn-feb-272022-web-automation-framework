@@ -32,12 +32,22 @@ public class BasePage extends Setup {
     @FindBy(xpath = "//li[@class='league']")
     List<WebElement> topEventsOptions;
 
+    @FindBy(css = "li.pillar")
+    List<WebElement> navPillarOptions;
+
+    @FindBy(css = "li.pillar.espnplus")
+    WebElement espnPlusNavBarLink;
+
     public void hoverOverTopEvents(WebDriver driver) {
         hoverOver(driver, topEventsBtn);
     }
 
     public void clickOnTopEventOption(String option) {
         clickOnElementInListWithGivenText(topEventsOptions, option);
+    }
+
+    public void clickOnNavPillarOption(String option) {
+        clickOnElementInListWithGivenText(navPillarOptions, option);
     }
 
     public String getTopEventsText() {
@@ -50,6 +60,10 @@ public class BasePage extends Setup {
 
     public void clickOnTeams(WebDriver driver) {
         hoverAndClick(driver, teamsLink);
+    }
+
+    public void clickOnEspnPlusInNavBar() {
+        click(espnPlusNavBarLink);
     }
 
 
